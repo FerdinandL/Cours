@@ -1,0 +1,80 @@
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Stack;
+
+public class BinaryTreeNode {
+
+	public int value;
+	public BinaryTreeNode left;
+	public BinaryTreeNode right;
+
+	public BinaryTreeNode(int value) {
+		this.value = value;
+	}
+
+	public BinaryTreeNode insertLeft(int leftValue) {
+		this.left = new BinaryTreeNode(leftValue);
+		return this.left;
+	}
+
+	public BinaryTreeNode insertRight(int rightValue) {
+		this.right = new BinaryTreeNode(rightValue);
+		return this.right;
+	}
+
+	public class NodeDepthPair {
+
+		BinaryTreeNode node;
+		int depth;
+
+		public NodeDepthPair(BinaryTreeNode node, int depth) {
+			this.node = node;
+			this.depth = depth;
+		}
+	}
+
+	public boolean checkBalanced(BinaryTreeNode b) {
+
+		List<Integer> depths = new ArrayList<Integer>(3);
+
+		Stack<NodeDepthPair> nodes = new Stack<NodeDepthPair>();
+		nodes.push(new NodeDepthPair(b, 0));
+
+		while (!nodes.empty()) {
+			NodeDepthPair ndp = nodes.pop();
+
+		}
+		return false;
+	}
+
+	// Probleme: Ici on ne considere pas ALL VALUES!!
+	// A reecrire, cela est faux
+	public static boolean checkBSTfalse(BinaryTreeNode b) {
+		if (b == null)
+			return true;
+
+		boolean condLeft = (b.left == null) ? true : (b.left.value <= b.value);
+		boolean condRight = (b.right == null) ? true : (b.right.value >= b.value);
+
+		return (condLeft && condRight && checkBSTfalse(b.left) && checkBSTfalse(b.right));
+	}
+
+	// Methode corrigee
+	public static boolean checkBST(BinaryTreeNode b, int low, int up) {
+		if (b == null)
+			return true;
+
+		return (checkBST(b.left,b.value,up) && checkBST(b.right,low,b.value));
+	}
+
+	// Test of function
+	public static void main(String[] args) {
+		BinaryTreeNode b = new BinaryTreeNode(300);
+		b.insertLeft(200);
+		b.insertRight(400);
+		b.left.insertLeft(150);
+		b.left.insertRight(500);
+
+		System.out.println(checkBST(b));
+	}
+}
